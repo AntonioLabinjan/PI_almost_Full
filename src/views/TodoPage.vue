@@ -27,14 +27,14 @@
         </div>
   
         <!-- Poruka ako nema zadataka -->
-        <p v-if="tasks.length === 0" class="text-center text-lg text-gray-500">
+        <p v-if="filteredTasks.length === 0" class="text-center text-lg text-gray-500">
           Nema zadataka. Dodaj neki!
         </p>
   
         <!-- lista taskova -->
-        <ul v-if="tasks.length > 0" class="space-y-4">
+        <ul v-if="filteredTasks.length > 0" class="space-y-4">
           <!-- v-for iterira kroz sve unesene taskove u tasks arrayu i dohvaća ih po indexu -->
-          <li v-for="(task, index) in tasks" :key="task.id"  
+          <li v-for="(task, index) in filteredTasks" :key="task.id"  
               class="flex items-center justify-between p-4 rounded-xl shadow-sm transition-all duration-300 bg-gray-100 hover:bg-gray-200">
   
             <!-- Text zadatka -->
@@ -56,6 +56,15 @@
             </div>
           </li>
         </ul>
+        <!-- div za filter -->
+        <div class="mb-6 flex justify-center">
+          <!-- v-model za input. Ono ča unesemo se sprema u searchQuery-->
+  <input
+    v-model="searchQuery"
+    placeholder="Pretraži zadatke..."
+    class="w-full max-w-md p-3 text-lg border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+  />
+</div>
         <router-link to="/">Go back home</router-link>
       </div>
     </div>
@@ -84,14 +93,21 @@
     data() {
       return {
         newTask: "",
-        tasks: []
+        tasks: [],
+         searchQuery: ""
       };
     },
     computed: {
       // computed property za broj zadataka
       taskCount() {
-        return this.tasks.length; 
-      }
+    return this.filteredTasks.length; // broj filtriranih taskova
+  },
+  filteredTasks() {
+    const query = this.searchQuery.toLowerCase().trim();
+    return this.tasks.filter(task =>
+      task.text.toLowerCase().includes(query)
+    );
+  }
     },
     methods: {
       // metoda za dodavanje taskova
