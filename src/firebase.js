@@ -3,6 +3,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"; // Import Firestore
 import { getAuth } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,7 +22,8 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // Export db so you can use it in your Vue app
 // ovo exportate tako da se more dohvatit u svakoj komponenti
-export { db, auth };
+export { db, auth, storage };
